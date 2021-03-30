@@ -48,9 +48,35 @@ model.compile(optimizer='adam',
 print("Resumo do modelo")
 model.summary()
 
+#   Dessa vez, antes de proseguirmos com o treinamento, vamos criar um callback.
+#   O callback serve para que o keras faca coisas entre epocas, como por exemplo,
+#   salvar o melhor modelo. Faremos um callback para que ele salve a melhor epoca,
+#   e mude o "learning rate" dependendo da epoca
+
+#   um learning rate scheduler muda o learning rate de acordo com qual a epoca atual
+#   nosso learning scheduler simplesmente muda a taxa ao passar de 10 epocas
+def scheduler(epoch):
+    if epoch < 10:
+        return 0.01
+    else:
+        return 0.005
+
+learning_schedule = keras.callbacks.LearningRateScheduler(scheduler)
+
+#   Para salvarmos a melhor epoca, usamos o callback de ModelCheckpoint
+model_checkpoint = keras.callbacks.ModelCheckpoint('model_checkpoint.hdf5',
+                    monitor='val_loss',
+                    verbose=2,
+                    save_best_only=True,
+                    save_weights_only=False,
+                    mode='auto')
+
+#   criamos o callback para passar para o metodo .fit
+callback = [learning_schedule, model_checkpoint]
+
 #   Agora vamos enfim treinar o modelo. Usamos o metodo "fit", passando como parametro nossos dados de treino, teste, e por quantas epocas
 #   Esse metodo retorna os dados mostrados durante o treinamento, e em geral e interessante salva-los.
-fit_history = model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=15)
+fit_history = model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=15, callbacks=callback)
 
 #   Quarta parte - Salvar o modelo e outros dados --------------------
 #   Neste ponto, nosso modelo ja esta treinado. Em geral, so queremos treinar o modelo uma unica vez, pois demora muito.

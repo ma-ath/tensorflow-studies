@@ -7,7 +7,7 @@ from tensorflow import keras
 #   Aqui vamos fazer alguma brincadeirinhas com nosso modelo treinado.
 #   Primeiro de tudo, precisamos carregar o modelo e os pesos do disco.
 model = keras.models.model_from_json(open('architecture.json').read())
-model.load_weights('model_weights.h5')
+model.load_weights('model_checkpoint.hdf5')
 
 #   Em seguida, o compilamos novamente
 model.compile(  optimizer='adam',
