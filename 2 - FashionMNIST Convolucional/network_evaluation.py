@@ -4,6 +4,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras
 
+#   Resolve um bug de "Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR"
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
+#
+
 #   Aqui vamos fazer alguma brincadeirinhas com nosso modelo treinado.
 #   Primeiro de tudo, precisamos carregar o modelo e os pesos do disco.
 model = keras.models.model_from_json(open('architecture.json').read())

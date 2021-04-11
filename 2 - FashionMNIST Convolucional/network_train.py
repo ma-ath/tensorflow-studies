@@ -8,6 +8,14 @@ import pandas
 import os
 from network_architectures import network_model
 
+#   Resolve um bug de "Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR"
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
+#
+#   -----------------------------------------------
 #   Primeira parte - fazer download e entender os dados ------------------------
 
 #   Faz o download do fashion_mnist da base de dados do keras
@@ -76,7 +84,7 @@ callback = [learning_schedule, model_checkpoint]
 
 #   Agora vamos enfim treinar o modelo. Usamos o metodo "fit", passando como parametro nossos dados de treino, teste, e por quantas epocas
 #   Esse metodo retorna os dados mostrados durante o treinamento, e em geral e interessante salva-los.
-fit_history = model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=15, callbacks=callback)
+fit_history = model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=15, batch_size=32, callbacks=callback)
 
 #   Quarta parte - Salvar o modelo e outros dados --------------------
 #   Neste ponto, nosso modelo ja esta treinado. Em geral, so queremos treinar o modelo uma unica vez, pois demora muito.
