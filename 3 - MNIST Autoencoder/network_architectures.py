@@ -8,9 +8,7 @@ from tensorflow import keras
 def dense_autoencoder():
     model = keras.Sequential()
     model.add(keras.layers.Flatten(input_shape=(28, 28)))
-    #model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(64, activation='relu'))
-    #model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(784, activation='sigmoid'))
     model.add(keras.layers.Reshape([28, 28]))
     return model
@@ -23,8 +21,7 @@ if __name__ == "__main__":
 
     #   Compila o modelo com otimizador "adam", funcao custo "sparse_categorical_crossentropy" e monitorando a metrica "accuracy".
     model.compile(  optimizer='adam',
-                    loss='sparse_categorical_crossentropy',
-                    metrics=['accuracy'])
+                    loss='mse')
     
     #   Mostra um resumo do modelo, camada a camada e com numero de parametros.
     #   Isso e muito util para vermos se programamos o modelo corretamente.
