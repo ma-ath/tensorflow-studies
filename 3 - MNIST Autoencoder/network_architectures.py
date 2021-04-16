@@ -8,7 +8,9 @@ from tensorflow import keras
 def dense_autoencoder():
     model = keras.Sequential()
     model.add(keras.layers.Flatten(input_shape=(28, 28)))
-    model.add(keras.layers.Dense(64, activation='relu'))
+    model.add(keras.layers.Dense(128, activation='relu'))
+    model.add(keras.layers.Dense(4, activation='relu'))
+    model.add(keras.layers.Dense(128, activation='relu'))
     model.add(keras.layers.Dense(784, activation='sigmoid'))
     model.add(keras.layers.Reshape([28, 28]))
     return model
